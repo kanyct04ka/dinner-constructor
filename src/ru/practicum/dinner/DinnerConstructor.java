@@ -46,28 +46,25 @@ public class DinnerConstructor {
         ArrayList<ArrayList<String>> combos = new ArrayList<>();
 
         for (int i = 1; i <= quantity; i++) {
-            combo = new ArrayList<>();
-            for (String type : types) {
-                dishesByType = menu.get(type);
-                int randomIndex = randomizer.nextInt(dishesByType.size());
-                combo.add(dishesByType.get(randomIndex));
-            }
-
-//            проверка уникальности комбо, чтобы не повторялись
-            boolean isComboUnique = true;
-            for (int j = 0; j < combos.size(); j++) {
-                if (combo.equals(combos.get(j))) {
-                    isComboUnique = false;
-                    break;
+            boolean isComboUnique = false;
+//            создать уникальное комбо, которое еще не повторялось
+            do {
+                combo = new ArrayList<>();
+                for (String type : types) {
+                    dishesByType = menu.get(type);
+                    int randomIndex = randomizer.nextInt(dishesByType.size());
+                    combo.add(dishesByType.get(randomIndex));
                 }
-            }
 
-            if (isComboUnique) {
-                combos.add(combo);
-            } else {
-                // если комбо не уникально надо не потерять итерацию иначе общее количество комбо будет меньше
-                i--;
-            }
+                for (int j = 0; j < combos.size(); j++) {
+                    if (combo.equals(combos.get(j))) {
+                        break;
+                    }
+                }
+                isComboUnique = true;
+            } while (isComboUnique);
+
+            combos.add(combo);
         }
 
         for (int i = 0; i < combos.size(); i++) {
