@@ -24,6 +24,7 @@ public class Main {
                     generateDishCombo();
                     break;
                 case "3":
+                    System.out.println("Программа завершена. До свидания!");
                     return;
                 default:
                     System.out.println("Неизвестная команда");
@@ -49,6 +50,12 @@ public class Main {
     }
 
     private static void generateDishCombo() {
+
+        if (dc.isMenuEmpty()) {
+            System.out.println("Список блюд пуст, добавьте сначала блюда");
+            return;
+        }
+
         System.out.println("Начинаем конструировать обед...");
 
         System.out.println("Введите количество наборов, которые нужно сгенерировать:");

@@ -15,18 +15,13 @@ public class DinnerConstructor {
     }
 
     void addNewDish(String type, String name) {
-        if (menu.containsKey(type)) {
-            dishesByType = menu.get(type);
-//            проверка на уникальность названия блюда в рамках типа
-            if (dishesByType.contains(name)) {
-                System.out.println("Данное блюдо уже существует");
-            } else {
-                dishesByType.add(name);
-            }
-        } else {
-            dishesByType = new ArrayList<>();
+        // добавить в меню тип блюда с пустым списком, если такого типа нет
+        menu.putIfAbsent(type, new ArrayList<>());
+        // получить список блюд по типу
+        dishesByType = menu.get(type);
+        // добавить блюдо в список, если такого в нем нет
+        if (!dishesByType.contains(name)) {
             dishesByType.add(name);
-            menu.put(type, dishesByType);
         }
     }
 
@@ -48,6 +43,7 @@ public class DinnerConstructor {
         for (int i = 1; i <= quantity; i++) {
             boolean isComboUnique = false;
 //            создать уникальное комбо, которое еще не повторялось
+            outer:
             do {
                 combo = new ArrayList<>();
                 for (String type : types) {
@@ -58,11 +54,11 @@ public class DinnerConstructor {
 
                 for (int j = 0; j < combos.size(); j++) {
                     if (combo.equals(combos.get(j))) {
-                        break;
+                        break outer;
                     }
                 }
                 isComboUnique = true;
-            } while (isComboUnique);
+            } while (!isComboUnique);
 
             combos.add(combo);
         }
@@ -75,5 +71,9 @@ public class DinnerConstructor {
 
     boolean isDishTypeExists(String type) {
         return menu.containsKey(type);
+    }
+
+    boolean isMenuEmpty() {
+        return menu.isEmpty();
     }
 }
